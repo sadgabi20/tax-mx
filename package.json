@@ -1,0 +1,22 @@
+{
+  "name": "tax-mx",
+  "version": "0.0.1",
+  "description": "Calculadora de impuestos para México",
+  "keywords": [
+    "taxes",
+    "calculator",
+    "impuestos",
+    "calculadora",
+    "mexico",
+    "méxico",
+    "sat",
+    "hacienda"
+  ],
+  "license": "MIT",
+  "author": "sadgabi20",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

@@ -1,0 +1,1 @@
+export { desglosar } from './isr';
