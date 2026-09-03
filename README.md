@@ -1,39 +1,38 @@
-## tax-mx
+# tax-mx
 
 Calculadora de impuestos para México.
 
-Actualizada según la última reforma a la LISR del 1 de abril del 2024.
+Actualizada según la última reforma a la LISR del 1 de abril del 2024. ESM, sin dependencias.
 
-La información proporcionada no toma en cuenta posibles estímulos fiscales o gravables extraordinarios.
+> La información proporcionada no toma en cuenta posibles estímulos fiscales o gravables extraordinarios.
 
-## Algoritmos
+## Instalación
 
-El cálculo del ISR se basa en el **[artículo 96 de la LISR (página 130)](https://www.diputados.gob.mx/LeyesBiblio/pdf/LISR.pdf)**:
+```bash
+npm install tax-mx
+```
 
-$$E = SB - li$$
+## Uso rápido
 
-$$RE = E \times PE$$
+```js
+import { calcularIsr } from 'tax-mx';
 
-$$ISR = CF + RE$$
+const { salarioNeto, totalRetenido } = calcularIsr(15000);
+console.log(salarioNeto);    // "12480.12"
+console.log(totalRetenido);  // "2519.88"
+```
 
-donde:
-- $SB$: Salario Base
-- $li$: Límite inferior del rango
-- $E$: Excedente sobre el límite inferior
-- $PE$: Porcentaje aplicable al excedente
-- $CF$: Cuota fija del rango
+## Scripts
 
-### Salario Neto
+```bash
+npm test                  # node --test "tests/**/*.test.js"
+node tests/isr.test.js    # CLI interactivo (prompt) o `node tests/isr.test.js 20000`
+```
 
-$$RIMSS = SB \times 0.025$$
+## Desarrollo
 
-$$SN = SB - ISR - RIMSS - O$$
+Se planea implementar otros regímenes fiscales y utilidades conforme avance el proyecto.
 
-donde:
-- $RIMSS$: Retención por IMSS (2.5% aprox.)
-- $O$: Otras retenciones ($50 MXN aprox.)
-- $SN$: Salario Neto (libre)
+## Licencia
 
-## A futuro
-
-Se planea implementar otros regímenes físcales y utilidades conforme avance el proyecto.
+MIT — ver [LICENSE](LICENSE).
