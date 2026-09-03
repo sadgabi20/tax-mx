@@ -1,1 +1,1 @@
-export { desglosar } from './isr';
+export { calcularIsr } from './isr.js';

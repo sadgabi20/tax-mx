@@ -1,11 +1,8 @@
-const readline = require('node:readline/promises');
-const { stdin: input, stdout: output } = require('node:process');
-
 /**
  * 
  * @param {number} salarioBase 
  * @param {boolean} desglosar 
- * @param {boolean} log 
+ * @param {boolean} imprimir 
  * @returns {{
  * limiteInf: number,
  * limiteSup: number,
@@ -20,29 +17,26 @@ const { stdin: input, stdout: output } = require('node:process');
  * totalRetenido: number
  * }}
  */
-export function main(salarioBase, desglosar = false, log = false) {
-    const rl = readline.createInterface({ input, output });
-
+export function calcularIsr(salarioBase, desglosar = false, imprimir = false) {
     try {
         let SB = salarioBase;
-        let desglosar = desglosar;
 
-        if (!/^\d+(\.\d+)?$/.test(SB)) throw new Error('Solo se pueden ingresar números');
-
-        SB = Number(SB);
+        if (typeof salarioBase != 'number') throw new Error('Solo se pueden ingresar números al salario base para calcular el ISR');
 
         let li = 0;
+        let ls = 0;
         let PE = 0;
         let CF = 0;
         const IMSS = 0.025;
         const O = 50;
 
-        function ajustarCFyPE(newCF, newPE) {
-            PE = newPE;
-            CF = newCF;
+        function ajustarCfPeLs(nuevoCF, nuevoPE, nuevoLs) {
+            PE = nuevoPE;
+            CF = nuevoCF;
+            ls = nuevoLs;
         }
 
-        if (SB < 0.01) throw new Error('Solo se puede introducir un valor mayor o igual a 0.01');
+        if (SB < 0.01) throw new Error('Solo se puede introducir un valor mayor o igual a 0.01 para calcular el ISR');
 
         const tabla = [
             { ls: 496.07, CF: 0, PE: 0.0192 },
@@ -68,12 +62,12 @@ export function main(salarioBase, desglosar = false, log = false) {
             }
 
             if (!rango.ls) {
-                ajustarCFyPE(rango.CF, rango.PE);
+                ajustarCfPeLs(rango.CF, rango.PE, rango.ls);
                 break;
             }
 
             if (SB > li && SB <= rango.ls) {
-                ajustarCFyPE(rango.CF, rango.PE);
+                ajustarCfPeLs(rango.CF, rango.PE, rango.ls);
                 break;
             }
         }
@@ -82,25 +76,38 @@ export function main(salarioBase, desglosar = false, log = false) {
         const RE = E * PE;
         const RIMSS = SB * IMSS;
         const SN = SB - CF - RE - RIMSS - O;
+        const TN = SB - SN;
 
-        if (desglosar) {
-            console.log(`Límite gravable inferior: ${li.toFixed(2)}`);
-            console.log(`Cuota fija: ${CF.toFixed(2)}`);
-            console.log(`Excedente sobre el límite inferior: $${E.toFixed(2)}`);
-            console.log(`Porcentaje gravable sobre el excedente: ${PE}%`);
-            console.log(`Retención sobre el excedente: $${RE.toFixed(2)}`);
-            console.log(`Porcentaje por IMSS: aprox. ${IMSS}%`);
-            console.log(`Retención por IMSS: $${RIMSS.toFixed(2)}`);
-            console.log(`Otras retenciones (bomberos, etc.): aprox. $${O.toFixed(2)}`);
+        if (imprimir) {
+            if (desglosar) {
+                console.log(`Límite gravable inferior: ${li.toFixed(2)}`);
+                console.log(`Cuota fija: ${CF.toFixed(2)}`);
+                console.log(`Excedente sobre el límite inferior: $${E.toFixed(2)}`);
+                console.log(`Porcentaje gravable sobre el excedente: ${PE}%`);
+                console.log(`Retención sobre el excedente: $${RE.toFixed(2)}`);
+                console.log(`Porcentaje por IMSS: aprox. ${IMSS}%`);
+                console.log(`Retención por IMSS: $${RIMSS.toFixed(2)}`);
+                console.log(`Otras retenciones (bomberos, etc.): aprox. $${O.toFixed(2)}`);
+            }
+
+            console.log(`\nImpuestos retenidos: ${(TN).toFixed(2)}`);
+            console.log(`Salario neto (libre): ${SN.toFixed(2)}`);
         }
 
-        console.log(`\nImpuestos retenidos: ${(SB - SN).toFixed(2)}`);
-        console.log(`Salario neto (libre): ${SN.toFixed(2)}`);
-
-        return { limiteInf, limiteSup, excedente, porcientoExcedente, retencionExcedente, porcientoIMSS, retencionIMSS, cuotaFija, otrasRetenciones, salarioNeto, totalRetenido }
+        return {
+            limiteInf: li.toFixed(2),
+            limiteSup: ls.toFixed(2),
+            excedente: E.toFixed(2),
+            porcientoExcedente: PE.toFixed(4),
+            retencionExcedente: RE.toFixed(2),
+            porcientoIMSS: IMSS.toFixed(4),
+            retencionIMSS: RIMSS.toFixed(2),
+            cuotaFija: CF.toFixed(2),
+            otrasRetenciones: O.toFixed(2),
+            salarioNeto: SN.toFixed(2),
+            totalRetenido: TN.toFixed(2)
+        }
     } catch (err) {
         throw new Error(err.message)
-    } finally {
-        rl.close();
     }
 }
