@@ -1,6 +1,7 @@
 name: 'Solicitar Implementación'
 description: Solicita una nueva implementación a tax-mx
 labels: [enhancement]
+title: Título
 body:
   - type: markdown
     attributes:
