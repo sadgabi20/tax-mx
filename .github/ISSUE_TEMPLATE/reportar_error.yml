@@ -1,0 +1,38 @@
+name: "\U0001F41E Reportar error"
+description: Reportar un problema con tax-mx
+labels: ['triage: bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tomarte el tiempo de llenar este reporte de error
+  - type: textarea
+    id: descripcion-error
+    attributes:
+      label: Descripción
+      description: Describe de forma clara y concisa el error a reportar. Si pretendes generar un PR para este issue, por favor dilo en la descripción. ¡Gracias!
+      placeholder: Descripción del error
+    validations:
+      required: true
+  - type: textarea
+    id: reproduccion
+    attributes:
+      label: Reproducción
+      description: Por favor describe los pasos a seguir para encontrar el error a reportar. Si un reporte es vago (ej. solo un mensaje de error genérico) y no incluye reproducción, recibirá la etiqueta "necesita reproducción". Si ninguna reproducción es proporcionada dentro de un marco de tiempo razonable, el issue será cerrado.
+      placeholder: Reproducción
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: 'Por favor incluye cualquier mensaje en terminal que se haya producido alrededor del momento del error. Opcional si se proporcionó reproducción. Por favor evita insertar una imagen; copia y pega los mensajes de la terminal.'
+      render: shell
+  - type: textarea
+    id: severidad
+    attributes:
+      label: Severidad
+      description: Describe en una frase la severidad del error y por que es importante resolverlo (ej. Alta; mejora de API)
+      placeholder: Severidad
+    validations:
+      required: true
