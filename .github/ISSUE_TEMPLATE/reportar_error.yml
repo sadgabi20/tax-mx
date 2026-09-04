@@ -1,6 +1,7 @@
 name: "\U0001F41E Reportar error"
 description: Reportar un problema con tax-mx
 labels: ['triage: bug']
+title: Título
 body:
   - type: markdown
     attributes:
