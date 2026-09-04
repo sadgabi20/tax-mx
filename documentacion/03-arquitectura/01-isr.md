@@ -39,25 +39,51 @@ TN    = SB - SN
 
 > Estas dos últimas son **estimaciones** de la librería, no cálculo oficial IMSS/SAT. Ver `04-referencia/02-conformidad.md`.
 
-## Tabla de rangos (src/isr.js)
+## Tablas de rangos (`tablas/retenciones.json` → `src/tablas.js` → `src/isr.js`)
 
-```js
-const tabla = [
-  { ls: 496.07,    CF: 0,        PE: 0.0192 },
-  { ls: 4210.41,   CF: 9.52,     PE: 0.0640 },
-  { ls: 7399.42,   CF: 247.24,   PE: 0.1088 },
-  { ls: 8601.50,   CF: 694.21,   PE: 0.1600 },
-  { ls: 10298.35,  CF: 786.54,   PE: 0.1792 },
-  { ls: 20770.29,  CF: 1090.61,  PE: 0.2136 },
-  { ls: 32736.83,  CF: 3327.42,  PE: 0.2352 },
-  { ls: 62500.00,  CF: 6141.95,  PE: 0.3000 },
-  { ls: 83333.33,  CF: 15070.90,  PE: 0.3200 },
-  { ls: 250000.00, CF: 21737.51, PE: 0.3400 },
-  { ls: null,      CF: 78404.23, PE: 0.3500 },
-];
+Las tablas de retenciones viven como fuente de verdad en `tablas/retenciones.json` y se re-exportan vía `src/tablas.js` / `tablas/index.js` para permitir `import` sin `with`.
+
+`tablas/retenciones.json`:
+
+```json
+{
+  "resico": {
+    "mensual": [
+      {"ls": 25000.00, "tasa": 0.0100},
+      {"ls": 50000.00, "tasa": 0.0110},
+      // ...
+    ],
+    "anual": [
+      {"ls": 300000.00, "tasa": 0.0100},
+      // ...
+    ]
+  },
+  "isr": [
+    { "ls": 496.07, "CF": 0, "PE": 0.0192 },
+    // ...
+  ]
+}
 ```
 
-`CF` y `PE` son por rango; `li` se derive como `tabla[i-1].ls + 0.01` (con `li = 0.01` para el primer rango). `ls = null` indica último rango sin tope.
+Uso:
+
+```js
+import tablas from 'tax-mx/tablas/retenciones.json' with { type: 'json' };
+import tablas from 'tax-mx/tablas';
+import { isr } from 'tax-mx/src/tablas.js';
+import { tablas } from 'tax-mx';
+```
+
+En `src/isr.js`:
+
+```js
+import tablas from './tablas.js';
+const tabla = tablas.isr;
+```
+
+Para ISR, `CF` y `PE` son por rango; `li` se derive como `tabla[i-1].ls + 0.01` (con `li = 0.01` para el primer rango). `ls = null` indica último rango sin límite superior.
+
+Para RESICO, `tasa` es la tasa de aportación por rango.
 
 ## Flujo del algoritmo (src/isr.js)
 
@@ -90,5 +116,5 @@ Coincide con `calcularIsr(15000, true, true)`.
 
 ## Mantenibilidad
 
-* Para actualizar la tabla por nueva reforma: editar `const tabla` en `src/isr.js` y añadir test en `tests/`.
+* Para actualizar la tabla por nueva reforma: editar `tablas/retenciones.json` (fuente de verdad) y `src/tablas.js` la re-exporta; `src/isr.js` la consume como `tablas.isr`. Añadir test en `tests/`.
 * Considerar extraer `IMSS` y `O` a parámetros opcionales en versiones futuras para no hardcodear.
