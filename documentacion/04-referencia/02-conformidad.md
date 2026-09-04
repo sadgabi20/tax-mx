@@ -1,17 +1,18 @@
 ## Alcance
 
-`tax-mx` v0.0.1 implementa **exclusivamente** la tarifa del **artículo 96 LISR** para retenciones provisionales mensuales de ISR por sueldos y salarios, conforme a la reforma del **1 de abril de 2024**.
+`tax-mx` v0.0.1 implementa **exclusivamente** las tarifas de los **artículos 96 y 113-E LISR** para retenciones provisionales mensuales de ISR por sueldos y salarios, y para retenciones provisionales mensuales y definitivas anuales de RESICO conforme a la reforma del **1 de abril de 2024**.
 
 Fuente primaria:
 
-* **LISR, Art. 96, Tarifa mensual** — PDF oficial Cámara de Diputados, p. 130: https://www.diputados.gob.mx/LeyesBiblio/pdf/LISR.pdf
+* **LISR, Artículos 96, 113-E** — PDF oficial Cámara de Diputados, págs. 130, 146-147: https://www.diputados.gob.mx/LeyesBiblio/pdf/LISR.pdf
 * Debe contrastarse con el **Anexo 8 de la Resolución Miscelánea Fiscal** y tablas publicadas en el DOF para el ejercicio vigente.
 
 ## Qué sí cumple
 
-* Fórmula `ISR = CF + (SB - li) * PE` aplicada por rango.
-* Tabla de 11 rangos con `ls`, `CF`, `PE` vigentes a 2024-04-01 (ver `src/isr.js`).
-* Validación de entrada `SB >= 0.01`.
+* Fórmula `ISR = CF + (SB - li) * PE` aplicada por rango para ISR.
+* Tabla de 11 rangos con `ls`, `CF`, `PE` vigentes a 2024-04-01 para ISR (ver `tablas/retenciones.json`).
+* Tablas de 5 rangos cada una con `ls`, `tasa` vigentes a 2024-04-01 para RESICO (ver `tablas/retenciones.json`).
+* Validación de entrada `SB >= 0.01` para ISR.
 
 ## Qué no cumple / limitaciones (importante)
 

@@ -11,6 +11,9 @@ tests/
 src/
   isr.js                   # calcularIsr()
   index.js                 # re-export
+tablas/
+  index.js                 # exportaciones de tablas
+  retenciones.json         # tablas de retenciones
 ```
 
 ### Comandos

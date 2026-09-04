@@ -1,3 +1,5 @@
+import tablas from './tablas.js';
+
 /**
  * 
  * @param {number} salarioBase 
@@ -38,19 +40,7 @@ export function calcularIsr(salarioBase, desglosar = false, imprimir = false) {
 
         if (SB < 0.01) throw new Error('Solo se puede introducir un valor mayor o igual a 0.01 para calcular el ISR');
 
-        const tabla = [
-            { ls: 496.07, CF: 0, PE: 0.0192 },
-            { ls: 4210.41, CF: 9.52, PE: 0.0640 },
-            { ls: 7399.42, CF: 247.24, PE: 0.1088 },
-            { ls: 8601.50, CF: 694.21, PE: 0.1600 },
-            { ls: 10298.35, CF: 786.54, PE: 0.1792 },
-            { ls: 20770.29, CF: 1090.61, PE: 0.2136 },
-            { ls: 32736.83, CF: 3327.42, PE: 0.2352 },
-            { ls: 62500.00, CF: 6141.95, PE: 0.3000 },
-            { ls: 83333.33, CF: 15070.90, PE: 0.3200 },
-            { ls: 250000.00, CF: 21737.51, PE: 0.3400 },
-            { ls: null, CF: 78404.23, PE: 0.3500 }
-        ];
+        const tabla = tablas.isr;
 
         for (let i = 0; i < tabla.length; i++) {
             const rango = tabla[i];

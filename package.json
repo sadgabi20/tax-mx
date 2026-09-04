@@ -21,6 +21,10 @@
   },
   "exports": {
     ".": "./src/index.js",
-    "./src": "./src/index.js"
+    "./src": "./src/index.js",
+    "./src/*": "./src/*",
+    "./tablas": "./tablas/index.js",
+    "./tablas/*": "./tablas/*",
+    "./tablas/retenciones.json": "./tablas/retenciones.json"
   }
 }
