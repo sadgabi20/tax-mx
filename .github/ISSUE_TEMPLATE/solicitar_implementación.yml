@@ -1,0 +1,35 @@
+name: 'Solicitar Implementación'
+description: Solicita una nueva implementación a tax-mx
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Gracias por tomarte el tiempo para solicitar esta implementación!
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      description: Por favor describe clara y concisamente el problema que esta implementación solucionaría. Mientras más información incluyas, mejor.
+      placeholder: A la libería le hace falta...
+    validations:
+      required: true
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Propuesta
+      description: Por favor proporciona de forma clara y concisa la solución que quiesieras fuera implementada
+      placeholder: Me gustaría que se agregue...
+    validations:
+      required: true
+  - type: dropdown
+    id: importancia
+    attributes:
+      label: Importancia
+      description: ¿Qué tan importante te parece esta implementación?
+      options:
+        - sería bueno tenerlo
+        - haría las cosas más fáciles
+        - no puedo usar tax-mx sin esto
+    validations:
+      required: true
